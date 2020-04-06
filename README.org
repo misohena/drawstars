@@ -153,7 +153,7 @@ drawstars --proj=EQUIRECTANGULAR --flux-gamma=1.2 --flux-multiplier=M-4.0 --flux
 
 こうしてできた画像を球のモデルにテクスチャとして貼り付けると全天を見回すVR映像が出来上がります。
 
-- デモ :
+- デモ : [[https://misohena.github.io/drawstars/examples/celestial-sphere/skyview.html][examples/celestial-sphere/skyview.html]]
 - ソース : [[file:./examples/celestial-sphere/]]
 
 [[file:./examples/celestial-sphere/screenshot1.jpg]]
@@ -198,7 +198,7 @@ drawstars --proj=PERSPECTIVE --width=2400 --height=1600 --fovy=44.9 --view-z=0.1
 
 デモでは画像をクリックすることで二つの画像を比較出来ます。
 
-- デモ :
+- デモ : [[https://misohena.github.io/drawstars/examples/compare-to-real/compare.html][examples/compare-to-real/compare.html]]
 - ソース : [[file:./examples/compare-to-real/]]
 
 * 参考
