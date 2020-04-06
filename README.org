@@ -1,14 +1,13 @@
 #+TITLE: 星空を描く
 #+OPTIONS: ^:{} H:4
 
-* 星空を描く
-** 概要
+* 概要
 ESA GaiaやHipparcos-2のデータを使用して星空を描画します。
 
 [[file:./examples/milkyway.jpg]]
 
-** 準備
-*** 星表のダウンロードと抽出
+* 準備
+** 星表のダウンロードと抽出
 星空を描画する前に、天体のカタログをダウンロードして必要な箇所だけ抜き出す必要があります。
 
 現在サポートしているカタログは次の二つです。
@@ -16,7 +15,7 @@ ESA GaiaやHipparcos-2のデータを使用して星空を描画します。
 - Gaia DR2
 - Hipparcos-2
 
-**** Gaia DR2
+*** Gaia DR2
 
 [[https://www.cosmos.esa.int/web/gaia/data-release-2][Gaia DR2]]は全天で16億以上もの天体を収録した巨大な星表です。この星表を使用すると天の川をかなり精密に描画出来ます。23等級程度の暗い星まで収録されている一方、ある程度以上明るい星は収録されていません。肉眼で見える星を全て網羅するには別の星表と組み合わせる必要があります。圧縮されたサイズで600GB弱もありダウンロードや保存、処理のために膨大なリソースが必要になります。
 
@@ -32,7 +31,7 @@ ESA GaiaやHipparcos-2のデータを使用して星空を描画します。
 
 gaia_extractをビルドするにはc++17が使用出来るg++とzlibが必要です。Python版(gaia_extract.py)もありますが遅いです。
 
-**** Hipparcos-2
+*** Hipparcos-2
 
 [[https://www.cosmos.esa.int/web/hipparcos/hipparcos-2][Hipparcos-2]]は全天で12万弱の星を収録した星表です。明るい星から約12等級程度までの星を収録しており、主要な星をカバーしています。
 
@@ -42,14 +41,14 @@ gaia_extractをビルドするにはc++17が使用出来るg++とzlibが必要�
 
 全てが成功すると hip2/hip2_ra_dec_mag_bv.dat (1,887,280バイト) というファイルが出来上がります。
 
-*** drawstarsコマンドのビルド
+** drawstarsコマンドのビルド
 
 トップディレクトリでmakeするとdrawstarsコマンドをビルドします。
 
 ビルドにはC++17が使用可能なg++とjpeglib、libpng、zlibが必要です。
 
-** drawstarsコマンドのオプション
-*** 入力オプション
+* drawstarsコマンドのオプション
+** 入力オプション
 | オプション名     | 指定値                                                 | 省略時 |
 |------------------+--------------------------------------------------------+--------|
 | =--catalog-dir=  | 各カタログディレクトリ(gaia/, hip2/)がある場所へのパス |      . |
@@ -60,14 +59,14 @@ gaia_extractをビルドするにはc++17が使用出来るg++とzlibが必要�
 | =--min-mag=      | 使用する最小の(最も明るい)等級                         | -100.0 |
 | =--max-mag=      | 使用する最大の(最も暗い)等級                           |  100.0 |
 
-*** 出力オプション
+** 出力オプション
 | オプション名     | 指定値                         | 省略時        |
 |------------------+--------------------------------+---------------|
 | =--floats=       | 浮動小数点数形式画像の出力先   | output.floats |
 | =--output=, =-o= | 画像の出力先(.bmp, .png, .jpg) | output.png    |
 | =--jpeg-q=       | JPEG出力時の品質値(0~100)      | 75            |
 
-*** レンダリングオプション
+** レンダリングオプション
 | オプション名             | 指定値                         |          省略時 |
 |--------------------------+--------------------------------+-----------------|
 | =--projection=, =--proj= | 投影モード(ER,PERS,LOAD)       | EQUIRECTANGULAR |
@@ -97,7 +96,7 @@ gaia_extractをビルドするにはc++17が使用出来るg++とzlibが必要�
 
   例えば3等星以上の星を大きくしたい場合、 --flux-inc-radius=M3 と指定します。M3は3等級差の倍率を表し、 10^{-0.4*3}=0.063095734448 なので --flux-inc-radius=0.063095734448 と指定したのと同じです。星の明るさが 0.063095734448 を超えるまでは =--radius-default= の半径で描画します。超えた場合は上述の方法で半径を計算して描画します。例えば0等星の明るさは 10^{-0.4*0}=1.0 なので、 半径は 0.6*sqrt(1.0/0.063095734448) = 2.38864302332 となります。それを =--radius-max= を超えないように制限します。
 
-*** ポストプロセスオプション
+** ポストプロセスオプション
 | オプション名        | 指定値                   | 省略時 |
 |---------------------+--------------------------+--------|
 | =--post-offset=     | 出力最小値               |    0.0 |
@@ -115,7 +114,7 @@ gaia_extractをビルドするにはc++17が使用出来るg++とzlibが必要�
 
 =--post-gamma= に1.0より大きい値を指定すると暗い部分を底上げ出来ますが彩度が失われて白っぽくなってしまいます。 =--flux-gamma= を使用した方が色味が維持されます(その代わり調整のたびに再レンダリングが必要になります)。
 
-*** 透視図法オプション
+** 透視図法オプション
 以下は --projection=PERSPECTIVE のときのみ有効です。
 
 | オプション名 | 指定値                           |                              省略時 |                                                                                               |
@@ -131,8 +130,8 @@ gaia_extractをビルドするにはc++17が使用出来るg++とzlibが必要�
 | --fovy       | 垂直視野角[度]                   |                               100.0 |                                                                                               |
 | --view-z     | 天球中心から視点の距離           |                                 0.0 | 0.0のとき心射方位図法(gnomonic projection)、1.0のとき平射図法(stereographic projection)になる |
 
-** 使用例
-*** 正距円筒図法による天球テクスチャの作成
+* 使用例
+** 正距円筒図法による天球テクスチャの作成
 
 正距円筒図法(equirectangular projection)は360度VRパノラマ写真でもよく使われている図法です。天球座標(赤経,赤偉)をそのまま平面座標(x,y)に読み替えたものです。
 
@@ -161,7 +160,7 @@ drawstars --proj=EQUIRECTANGULAR --flux-gamma=1.2 --flux-multiplier=M-4.0 --flux
 
 [[file:./examples/celestial-sphere/screenshot2.jpg]]
 
-*** 実際の写真とレンダリング結果との比較
+** 実際の写真とレンダリング結果との比較
 
 drawstarsは地上の観測者から見た星空を再現することも可能です。
 
@@ -202,7 +201,7 @@ drawstars --proj=PERSPECTIVE --width=2400 --height=1600 --fovy=44.9 --view-z=0.1
 - デモ :
 - ソース : [[file:./examples/compare-to-real/]]
 
-** 参考
+* 参考
 - [[https://www.cosmos.esa.int/web/gaia/data-release-2][Gaia Data Release 2 - Gaia - Cosmos]] : This work has made use of data from the European Space Agency (ESA) mission Gaia (https://www.cosmos.esa.int/gaia), processed by the Gaia Data Processing and Analysis Consortium (DPAC, https://www.cosmos.esa.int/web/gaia/dpac/consortium). Funding for the DPAC has been provided by national institutions, in particular the institutions participating in the Gaia Multilateral Agreement.
 - [[https://www.cosmos.esa.int/web/hipparcos/hipparcos-2][The Hipparcos-2 Catalogue - Hipparcos - Cosmos]]
 - [[http://www.iausofa.org/][Standards of Fundamental Astronomy]]
