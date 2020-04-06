@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Comparing Real and Rendered Image</title>
+  </head>
+  <body>
+    <h1>Comparing Real and Rendered Image</h1>
+    <p>Click to switch images.</p>
+
+    <h2>--fovy=53</h2>
+    <div id="fovy53-div">
+      <img src="20190729_real.jpg" width="100%" id="fovy53-a" />
+      <img src="20190729-fovy53.jpg" width="100%" id="fovy53-b" />
+    </div>
+
+    <h2>--fovy=44.9 --view-z=0.18</h2>
+    <div id="img-div">
+      <img src="20190729_real.jpg" width="100%" id="img-a" />
+      <img src="20190729.jpg" width="100%" id="img-b" />
+    </div>
+
+    <script>
+    function setup(idDiv, idImgA, idImgB)
+    {
+        var imgDiv = document.getElementById(idDiv);
+        var imgA = document.getElementById(idImgA);
+        var imgB = document.getElementById(idImgB);
+        function showA()
+        {
+            imgA.style.display = "block";
+            imgB.style.display = "none";
+        }
+        function showB()
+        {
+            imgA.style.display = "none";
+            imgB.style.display = "block";
+        }
+        imgDiv.addEventListener("mousedown", showB, false);
+        imgDiv.addEventListener("mouseup", showA, false);
+        showA();
+    }
+    setup("img-div", "img-a", "img-b");
+    setup("fovy53-div", "fovy53-a", "fovy53-b");
+    </script>
+  </body>
+</html>
