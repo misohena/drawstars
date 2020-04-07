@@ -37,6 +37,9 @@
         }
         imgDiv.addEventListener("mousedown", showB, false);
         imgDiv.addEventListener("mouseup", showA, false);
+        imgDiv.addEventListener("touchstart", showB, false);
+        imgDiv.addEventListener("touchcancel", showA, false);
+        imgDiv.addEventListener("touchend", showA, false);
         showA();
     }
     setup("img-div", "img-a", "img-b");
