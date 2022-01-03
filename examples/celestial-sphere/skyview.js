@@ -398,20 +398,26 @@
                     vertices[vi++] = t;
                 }
             }
-            const indices = new Uint16Array(DIV_SPHERE * DIV_SPHERE * 2 * 4);
-            for(let i = 0, ii = 0; i < DIV_SPHERE; ++i){
-                const indexTop = i * (2 * DIV_SPHERE + 1);
-                const indexBottom = indexTop + (2 * DIV_SPHERE + 1);
-                for(let j = 0; j < 2 * DIV_SPHERE; ++j){
-                    const indexTopRight = indexTop + j;
-                    const indexTopLeft = indexTop + j + 1;
-                    const indexBottomRight = indexBottom + j;
-                    const indexBottomLeft = indexBottom + j + 1;
-                    indices[ii++] = indexTopRight;
-                    indices[ii++] = indexBottomRight;
+            const numIndices = 1 + DIV_SPHERE * (1 + 2*DIV_SPHERE * 2);
+            const indices = new Uint16Array(numIndices);
+            let ii = 0;
+            let dir = 1;
+            indices[ii++] = 0;
+            for(let i = 0; i < DIV_SPHERE; ++i){
+                const indexTop = i * (2*DIV_SPHERE + 1);
+                const indexBottom = indexTop + (2*DIV_SPHERE + 1);
+                const indexBottomRight = indexBottom + (dir >= 0 ? 0 : 2*DIV_SPHERE);
+                indices[ii++] = indexBottomRight;
+                for(let j = 1; j <= 2*DIV_SPHERE; ++j){
+                    const indexTopLeft = indexTop + (dir >= 0 ? j : (2*DIV_SPHERE - j));
+                    const indexBottomLeft = indexBottom + (dir >= 0 ? j : (2*DIV_SPHERE - j));
                     indices[ii++] = indexTopLeft;
                     indices[ii++] = indexBottomLeft;
                 }
+                dir = -dir;
+            }
+            if(ii != numIndices){
+                throw Error("Assertion failed (ii != numIndices)");
             }
             const vertexBuffer = gl.createBuffer();
             gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
@@ -501,7 +507,7 @@
                 gl.activeTexture(gl.TEXTURE0);
                 gl.bindTexture(gl.TEXTURE_2D, texture);
                 gl.uniform1i(shaderLocations.uniform.sampler, 0);
-                gl.drawElements(gl.TRIANGLE_STRIP, DIV_SPHERE * DIV_SPHERE * 2 * 4, gl.UNSIGNED_SHORT, 0);
+                gl.drawElements(gl.TRIANGLE_STRIP, numIndices, gl.UNSIGNED_SHORT, 0);
                 gl.disableVertexAttribArray(shaderLocations.attr.position);
                 gl.disableVertexAttribArray(shaderLocations.attr.texcoord);
                 gl.bindTexture(gl.TEXTURE_2D, null);
